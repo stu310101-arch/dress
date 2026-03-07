@@ -1,77 +1,57 @@
-<!doctype html>
 <html lang="zh-Hant">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>換裝遊戲</title>
-  <meta name="color-scheme" content="dark" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>換裝遊戲</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./app.js" defer></script>
+  <meta property="og:image" content="https://screenshot.cosine.page?url=https://m2qvm3i510gt.cosine.page"><script src="https://cosine.sh/preview/script.js"></script></head>
+  <body>
+    <header class="app-header">
+      <div class="app-header__left">
+        <h1 class="app-title">換裝遊戲</h1>
+        <p class="app-subtitle">左邊預覽人物；右邊衣櫃切換分類後會列出該部位全部裝扮，可向下捲動；點選即可穿上／再點一次可移除。</p>
+      </div>
+      <div class="app-header__right">
+        <div id="status" class="status" role="status" aria-live="polite"></div>
+      </div>
+    </header>
 
-  <link rel="stylesheet" href="./dressup.css" />
-  <script src="./dressup.js" defer></script>
-</head>
-<body class="dressup-root">
-  <div class="dressup-container">
-    <div class="dressup-layout" id="dressup-app">
-      <!-- 左：模特兒（正 / 背面） -->
-      <aside class="dressup-sidebar dressup-card" aria-label="模特兒">
-        <div class="dressup-card-header">
-          <h1 class="dressup-title">換裝遊戲</h1>
-          <p class="dressup-subtitle">左側切換正面 / 背面；右側選擇衣物與飾品。</p>
-        </div>
-
-        <div class="dressup-card-body">
-          <div id="dressup-stage" class="dressup-stage" aria-label="模特兒舞台"></div>
-
-          <div class="dressup-section">
-            <div class="dressup-sidebar-actions">
-              <button id="dressup-view-front" class="dressup-btn dressup-btn-primary" type="button" aria-pressed="true">正面</button>
-              <button id="dressup-view-back" class="dressup-btn" type="button" aria-pressed="false">背面</button>
-              <button id="dressup-reset" class="dressup-btn" type="button">Reset 全部</button>
-            </div>
-            <p id="dressup-error" class="dressup-subtitle" role="status"></p>
+    <main class="app">
+      <section class="model-pane" aria-label="人物預覽">
+        <div class="model-toolbar">
+          <div class="model-actions" aria-label="快捷操作">
+            <button id="clearAllBtn" class="text-button" type="button">一鍵脫下</button>
+            <button id="randomWearBtn" class="text-button" type="button">隨機穿上</button>
           </div>
         </div>
+
+        <div id="modelStage" class="model-stage">
+          <div class="model-view" data-view="front" aria-label="正面">
+            <div class="model-frame">
+              <div class="model-placeholder" data-kind="base" aria-hidden="true">
+                <div class="model-placeholder__silhouette"></div>
+                <div class="model-placeholder__text">尚未放入人物底圖（正面）</div>
+              </div>
+              <img class="model-base" alt="人物底圖 正面" />
+              <div class="model-overlays" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="wardrobe-pane" aria-label="衣櫃">
+        <div class="wardrobe-header">
+          <div class="wardrobe-header__left">
+            <div class="section-title">衣櫃</div>
+            <div id="categoryFilters" class="category-filters" role="tablist" aria-label="分類篩選"></div>
+          </div>
+          <div id="equippedChips" class="equipped-chips" aria-label="目前穿戴"></div>
+        </div>
+
+        <div id="wardrobeItems" class="wardrobe-shelves" aria-label="裝扮槽位"></div>
       </aside>
-
-      <!-- 右：衣櫃 -->
-      <main class="dressup-main dressup-card" aria-label="衣櫃">
-        <div class="dressup-card-header">
-          <h2 class="dressup-title">衣櫃</h2>
-          <p class="dressup-subtitle">點一下穿上 / 更換；再點一次脫下。</p>
-        </div>
-
-        <div class="dressup-card-body">
-          <div id="dressup-tabs" class="dressup-tabs" role="tablist" aria-label="衣櫃分類"></div>
-
-          <section id="dressup-slot-section" class="dressup-section dressup-hidden" aria-label="飾品分類">
-            <div class="dressup-section-header">
-              <div>
-                <h3 class="dressup-section-title">飾品分類（slot）</h3>
-                <p class="dressup-section-hint">同 slot 互斥，不同 slot 可同時選。</p>
-              </div>
-            </div>
-            <div id="dressup-slot-tabs" class="dressup-tabs" role="tablist" aria-label="飾品 slot"></div>
-          </section>
-
-          <section class="dressup-section" aria-label="物品清單">
-            <div class="dressup-section-header">
-              <div>
-                <h3 id="dressup-grid-title" class="dressup-section-title">物品</h3>
-                <p id="dressup-grid-hint" class="dressup-section-hint"></p>
-              </div>
-            </div>
-            <div id="dressup-grid" class="dressup-grid"></div>
-          </section>
-        </div>
-      </main>
-    </div>
-  </div>
-
-  <noscript>
-    <div style="max-width: 720px; margin: 16px auto; padding: 12px 14px; border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; background: rgba(0,0,0,0.12); color: white;">
-      需要啟用 JavaScript 才能使用換裝功能。
-    </div>
-  </noscript>
+    </main>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v67327c56f0bb4ef8b305cae61679db8f1769101564043" integrity="sha512-rdcWY47ByXd76cbCFzznIcEaCN71jqkWBBqlwhF1SY7KubdLKZiEGeP7AyieKZlGP9hbY/MhGrwXzJC/HulNyg==" data-cf-beacon='{"version":"2024.11.0","token":"ad0c2b25e44a4e4aa387cdb33572cae5","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
-
