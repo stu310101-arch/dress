@@ -175,7 +175,6 @@
 
   const CATEGORIES = [ACCESSORY_CATEGORY, "上衣", "下身裝扮", "鞋子", "襪子"];
   const SINGLE_SELECT_CATEGORIES = CATEGORIES.filter((cat) => !MULTI_SELECT_CATEGORIES.has(cat));
-  const PAGE_SIZE = 5;
 
   // 圖層：衣服 > 褲子 > 襪子，鞋子 > 襪子
   const CATEGORY_Z_INDEX = {
@@ -200,9 +199,6 @@
 
     // itemId -> item
     itemsById: new Map(),
-
-    // category -> pageIndex (0-based)
-    pageByCategory: new Map(),
 
     // category -> button element
     categoryButtons: new Map(),
@@ -267,11 +263,6 @@
     SINGLE_SELECT_CATEGORIES.forEach((cat) => state.equippedSingle.set(cat, null));
 
     state.equippedAccessories = new Set();
-  }
-
-  function initPagination() {
-    state.pageByCategory = new Map();
-    CATEGORIES.forEach((cat) => state.pageByCategory.set(cat, 0));
   }
 
   function rebuildIndex() {
@@ -500,27 +491,12 @@
       .sort((a, b) => safeLocaleCompare(a.name, b.name));
   }
 
-  function clamp(value, min, max) {
-    if (value < min) return min;
-    if (value > max) return max;
-    return value;
-  }
-
   function renderShelf() {
     const root = document.getElementById("wardrobeItems");
     if (!root) return;
 
     const category = state.activeCategory;
     const items = getCategoryItems(category);
-    const totalPages = Math.max(1, Math.ceil(items.length / PAGE_SIZE));
-
-    const currentPage = clamp(state.pageByCategory.get(category) ?? 0, 0, totalPages - 1);
-    if (currentPage !== (state.pageByCategory.get(category) ?? 0)) {
-      state.pageByCategory.set(category, currentPage);
-    }
-
-    const startIndex = currentPage * PAGE_SIZE;
-    const pageItems = items.slice(startIndex, startIndex + PAGE_SIZE);
 
     const isMultiSelect = MULTI_SELECT_CATEGORIES.has(category);
     const equippedSingleId = state.equippedSingle.get(category);
@@ -542,48 +518,16 @@
 
     const titleMeta = document.createElement("div");
     titleMeta.className = "shelf-title__meta";
-    titleMeta.textContent = `第 ${currentPage + 1} / ${totalPages} 頁 · 共 ${items.length} 件`;
+    titleMeta.textContent = `共 ${items.length} 件`;
 
     title.appendChild(titleName);
     title.appendChild(titleMeta);
-
-    const controls = document.createElement("div");
-    controls.className = "shelf-controls";
-
-    const prevBtn = document.createElement("button");
-    prevBtn.type = "button";
-    prevBtn.className = "icon-button";
-    prevBtn.textContent = "‹";
-    prevBtn.setAttribute("aria-label", "上一頁");
-    prevBtn.disabled = currentPage <= 0;
-    prevBtn.addEventListener("click", () => {
-      const page = state.pageByCategory.get(category) ?? 0;
-      state.pageByCategory.set(category, Math.max(0, page - 1));
-      renderShelf();
-    });
-
-    const nextBtn = document.createElement("button");
-    nextBtn.type = "button";
-    nextBtn.className = "icon-button";
-    nextBtn.textContent = "›";
-    nextBtn.setAttribute("aria-label", "下一頁");
-    nextBtn.disabled = currentPage >= totalPages - 1;
-    nextBtn.addEventListener("click", () => {
-      const page = state.pageByCategory.get(category) ?? 0;
-      state.pageByCategory.set(category, Math.min(totalPages - 1, page + 1));
-      renderShelf();
-    });
-
-    controls.appendChild(prevBtn);
-    controls.appendChild(nextBtn);
-
     header.appendChild(title);
-    header.appendChild(controls);
 
     const slots = document.createElement("div");
     slots.className = "shelf-slots";
 
-    pageItems.forEach((item) => {
+    items.forEach((item) => {
       const selected = isMultiSelect ? state.equippedAccessories.has(item.id) : equippedSingleId === item.id;
 
       const card = document.createElement("button");
@@ -604,22 +548,6 @@
 
       slots.appendChild(card);
     });
-
-    for (let i = pageItems.length; i < PAGE_SIZE; i += 1) {
-      const card = document.createElement("button");
-      card.type = "button";
-      card.className = "slot-card";
-      card.disabled = true;
-
-      card.appendChild(createSlotThumb("", "空"));
-
-      const name = document.createElement("div");
-      name.className = "slot-name";
-      name.textContent = "空格";
-      card.appendChild(name);
-
-      slots.appendChild(card);
-    }
 
     shelf.appendChild(header);
     shelf.appendChild(slots);
@@ -811,7 +739,6 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     initEquipped();
-    initPagination();
 
     state.wardrobe = normalizeWardrobe(WARDROBE_DATA);
     setStatus("已載入衣櫃資料");
