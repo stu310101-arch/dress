@@ -1,8 +1,11 @@
 (() => {
   'use strict';
 
-  // v2：對應 dressup/index.html + dressup/dressup.css 的結構（不再動態造整頁 UI）。
+  // v2：對應 index.html + styles.css 的結構（不再動態造整頁 UI）。
   const STORAGE_KEY = 'dressup.state.v2';
+
+  // 依照你的要求：最後只保留 app.js / styles.css / index.html。
+  // 因此這裡「不 fetch manifest.json」也「不依賴 assets 圖檔」，改用內嵌 SVG data URL。
 
   const $ = (id) => document.getElementById(id);
 
@@ -18,11 +21,171 @@
     }
   }
 
-  async function fetchManifest() {
-    const res = await fetch('./manifest.json', { cache: 'no-store' });
-    if (!res.ok) throw new Error(`manifest.json HTTP ${res.status}`);
-    return res.json();
+  function svgDataUrl(svg) {
+    return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
   }
+
+  function makeBaseSvg(view) {
+    const title = view === 'back' ? '模特兒（背面）' : '模特兒（正面）';
+    const accent = view === 'back' ? '#22d3ee' : '#7c5cff';
+    return svgDataUrl(`<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#0b1020"/>
+      <stop offset="1" stop-color="#070a14"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="1200" fill="url(#bg)"/>
+  <circle cx="450" cy="260" r="120" fill="#eaf0ff" opacity="0.18"/>
+  <rect x="300" y="380" width="300" height="560" rx="140" fill="#eaf0ff" opacity="0.12"/>
+  <text x="50%" y="95" font-size="46" text-anchor="middle" fill="${accent}" font-family="ui-sans-serif, system-ui">${title}</text>
+</svg>`);
+  }
+
+  function makeItemSvg(label, view, color) {
+    const subtitle = view === 'back' ? 'Back' : 'Front';
+    return svgDataUrl(`<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200">
+  <rect width="900" height="1200" fill="none"/>
+  <g>
+    <rect x="170" y="360" width="560" height="620" rx="90" fill="${color}" opacity="0.20"/>
+    <rect x="210" y="420" width="480" height="500" rx="80" fill="${color}" opacity="0.28"/>
+    <text x="50%" y="520" font-size="44" text-anchor="middle" fill="#eaf0ff" opacity="0.85" font-family="ui-sans-serif, system-ui">${label}</text>
+    <text x="50%" y="585" font-size="28" text-anchor="middle" fill="#eaf0ff" opacity="0.6" font-family="ui-sans-serif, system-ui">${subtitle}</text>
+  </g>
+</svg>`);
+  }
+
+  function makeThumbSvg(label, color) {
+    return svgDataUrl(`<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <rect width="256" height="256" rx="28" fill="${color}" opacity="0.20"/>
+  <rect x="22" y="22" width="212" height="212" rx="24" fill="${color}" opacity="0.28"/>
+  <text x="50%" y="54%" font-size="22" text-anchor="middle" fill="#eaf0ff" opacity="0.88" font-family="ui-sans-serif, system-ui">${label}</text>
+</svg>`);
+  }
+
+  const EMBEDDED_MANIFEST_RAW = {
+    manifestVersion: 1,
+    models: {
+      base: {
+        id: 'base',
+        name: '模特兒',
+        front: makeBaseSvg('front'),
+        back: makeBaseSvg('back')
+      }
+    },
+    categories: [
+      { id: 'accessories', label: '飾品', type: 'accessory' },
+      { id: 'top', label: '上身', type: 'single' },
+      { id: 'bottom', label: '下身', type: 'single' },
+      { id: 'socks', label: '襪子', type: 'single' },
+      { id: 'shoes', label: '鞋子', type: 'single' }
+    ],
+    accessorySlots: [
+      { id: 'head', label: '頭飾' },
+      { id: 'ear', label: '耳飾' },
+      { id: 'neck', label: '項鍊' },
+      { id: 'hand', label: '手部' }
+    ],
+    layers: [
+      { id: 'base', label: 'Base', baseZ: 0 },
+      { id: 'socks', label: 'Socks', baseZ: 200 },
+      { id: 'bottom', label: 'Bottom', baseZ: 300 },
+      { id: 'shoes', label: 'Shoes', baseZ: 400 },
+      { id: 'top', label: 'Top', baseZ: 500 },
+      { id: 'accessory', label: 'Accessory', baseZ: 600 }
+    ],
+    items: [
+      {
+        id: 'top_basic_tshirt',
+        name: '短袖上衣',
+        category: 'top',
+        layer: 'top',
+        zIndex: 0,
+        thumb: makeThumbSvg('上衣', '#7c5cff'),
+        images: {
+          front: makeItemSvg('短袖上衣', 'front', '#7c5cff'),
+          back: makeItemSvg('短袖上衣', 'back', '#7c5cff')
+        }
+      },
+      {
+        id: 'bottom_jeans',
+        name: '牛仔褲',
+        category: 'bottom',
+        layer: 'bottom',
+        zIndex: 0,
+        thumb: makeThumbSvg('牛仔褲', '#60a5fa'),
+        images: {
+          front: makeItemSvg('牛仔褲', 'front', '#60a5fa'),
+          back: makeItemSvg('牛仔褲', 'back', '#60a5fa')
+        }
+      },
+      {
+        id: 'socks_white',
+        name: '白襪',
+        category: 'socks',
+        layer: 'socks',
+        zIndex: 0,
+        thumb: makeThumbSvg('白襪', '#eaf0ff'),
+        images: {
+          front: makeItemSvg('白襪', 'front', '#eaf0ff'),
+          back: makeItemSvg('白襪', 'back', '#eaf0ff')
+        }
+      },
+      {
+        id: 'shoes_sneakers',
+        name: '球鞋',
+        category: 'shoes',
+        layer: 'shoes',
+        zIndex: 0,
+        thumb: makeThumbSvg('球鞋', '#34d399'),
+        images: {
+          front: makeItemSvg('球鞋', 'front', '#34d399'),
+          back: makeItemSvg('球鞋', 'back', '#34d399')
+        }
+      },
+      {
+        id: 'acc_head_ribbon',
+        name: '蝴蝶結頭飾',
+        category: 'accessories',
+        slot: 'head',
+        layer: 'accessory',
+        zIndex: 50,
+        thumb: makeThumbSvg('頭飾', '#f472b6'),
+        images: {
+          front: makeItemSvg('頭飾', 'front', '#f472b6'),
+          back: makeItemSvg('頭飾', 'back', '#f472b6')
+        }
+      },
+      {
+        id: 'acc_earrings',
+        name: '耳環',
+        category: 'accessories',
+        slot: 'ear',
+        layer: 'accessory',
+        zIndex: 30,
+        thumb: makeThumbSvg('耳環', '#22d3ee'),
+        images: {
+          front: makeItemSvg('耳環', 'front', '#22d3ee'),
+          back: makeItemSvg('耳環', 'back', '#22d3ee')
+        }
+      },
+      {
+        id: 'acc_necklace',
+        name: '項鍊（示範：只有正面）',
+        category: 'accessories',
+        slot: 'neck',
+        layer: 'accessory',
+        zIndex: 10,
+        thumb: makeThumbSvg('項鍊', '#fbbf24'),
+        images: {
+          front: makeItemSvg('項鍊', 'front', '#fbbf24')
+        }
+      }
+    ]
+  };
 
   function normalizeManifest(manifest) {
     if (!manifest || typeof manifest !== 'object') throw new Error('manifest 不是物件');
@@ -82,13 +245,9 @@
       ...parsed
     };
 
-    // view
     if (state.view !== 'front' && state.view !== 'back') state.view = fallback.view;
-
-    // active category
     if (!manifest.categoryById.has(state.activeCategoryId)) state.activeCategoryId = fallback.activeCategoryId;
 
-    // selectedByCategory
     const selectedByCategory = { ...fallback.selectedByCategory };
     if (parsed.selectedByCategory && typeof parsed.selectedByCategory === 'object') {
       for (const [catId, itemId] of Object.entries(parsed.selectedByCategory)) {
@@ -97,7 +256,6 @@
       }
     }
 
-    // accessoriesBySlot
     const accessoriesBySlot = { ...fallback.accessoriesBySlot };
     if (parsed.accessoriesBySlot && typeof parsed.accessoriesBySlot === 'object') {
       for (const [slotId, itemId] of Object.entries(parsed.accessoriesBySlot)) {
@@ -109,7 +267,6 @@
     state.selectedByCategory = selectedByCategory;
     state.accessoriesBySlot = accessoriesBySlot;
 
-    // active accessory slot
     if (typeof parsed.activeAccessorySlotId !== 'string') {
       state.activeAccessorySlotId = fallback.activeAccessorySlotId;
     } else if (parsed.activeAccessorySlotId !== 'all' && !manifest.slotById.has(parsed.activeAccessorySlotId)) {
@@ -127,6 +284,7 @@
     return item?.images?.[view] || null;
   }
 
+  // Optional transform support (kept for compatibility if you later add transforms in the embedded manifest)
   function resolveTransform(item, view) {
     const t = item?.transform?.[view] || item?.transform?.default || null;
     if (!t || typeof t !== 'object') return null;
@@ -184,7 +342,6 @@
   function renderStage(ui, manifest, state) {
     ui.stage.innerHTML = '';
 
-    // base model
     const base = manifest.raw.models.base;
     const baseSrc = base[state.view] || base.front || null;
     if (baseSrc) {
@@ -196,7 +353,7 @@
       img.style.zIndex = '0';
       img.addEventListener('error', () => {
         img.remove();
-        setError(ui, '模特兒圖片載入失敗：請確認 manifest.json 內的路徑正確，且對應檔案存在（assets/model/base_front.* / base_back.*）。');
+        setError(ui, '模特兒圖片載入失敗');
       });
       ui.stage.appendChild(img);
     }
@@ -209,7 +366,7 @@
 
     for (const { item, z } of equipped) {
       const src = resolveOverlaySrc(item, state.view);
-      if (!src) continue; // 該視角沒有圖就不顯示
+      if (!src) continue;
 
       const img = document.createElement('img');
       img.className = 'dressup-layer';
@@ -300,11 +457,9 @@
     const cat = manifest.categoryById.get(state.activeCategoryId);
     ui.gridTitle.textContent = cat?.label || '物品';
 
-    if (cat?.type === 'accessory') {
-      ui.gridHint.textContent = '飾品可以多選；同一個 slot（例如頭飾）只能戴一個。';
-    } else {
-      ui.gridHint.textContent = '同一分類互斥（上身/下身/襪子/鞋子）。';
-    }
+    ui.gridHint.textContent = cat?.type === 'accessory'
+      ? '飾品可以多選；同一個 slot（例如頭飾）只能戴一個。'
+      : '同一分類互斥（上身/下身/襪子/鞋子）。';
 
     const items = getVisibleItems(manifest, state);
 
@@ -343,7 +498,6 @@
 
       btn.appendChild(thumbWrap);
       btn.appendChild(label);
-
       ui.grid.appendChild(btn);
     }
   }
@@ -367,8 +521,7 @@
   }
 
   function resetState(manifest) {
-    const state = defaultState(manifest);
-    return state;
+    return defaultState(manifest);
   }
 
   async function main() {
@@ -386,19 +539,11 @@
       grid: $('dressup-grid')
     };
 
-    // 基本結構檢查
     for (const [k, v] of Object.entries(ui)) {
       if (!v) throw new Error(`缺少必要的 DOM 節點：${k}`);
     }
 
-    let manifest;
-    try {
-      manifest = normalizeManifest(await fetchManifest());
-    } catch (err) {
-      setError(ui, `manifest.json 載入失敗：${err?.message || String(err)}`);
-      return;
-    }
-
+    const manifest = normalizeManifest(EMBEDDED_MANIFEST_RAW);
     let state = loadState(defaultState(manifest), manifest);
 
     function renderAll() {
@@ -431,7 +576,6 @@
       const id = btn?.dataset?.categoryId;
       if (!id || !manifest.categoryById.has(id)) return;
       state.activeCategoryId = id;
-      // 切換到飾品時，不清掉 slot filter，但如果該 slot 不存在就回 all。
       if (state.activeAccessorySlotId !== 'all' && !manifest.slotById.has(state.activeAccessorySlotId)) {
         state.activeAccessorySlotId = 'all';
       }
