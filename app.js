@@ -3,52 +3,51 @@
 // - 純靜態版：素材清單內建於 app.js（不使用 config.js）
 
 (() => {
+  const ACCESSORY_CATEGORY = "配件";
+  const MULTI_SELECT_CATEGORIES = new Set([ACCESSORY_CATEGORY]);
+
   // 內建素材清單（請把對應 PNG 放在 public/ 下的路徑）
+  // - customTransform: 可選，用來覆寫 styles.css 內針對該分類的預設對齊
   const WARDROBE_DATA = {
     baseModel: {
       front: "./模特兒/model.png",
     },
     items: [
-            {
+      {
         id: "衣服",
         name: "衣服",
         category: "上衣",
         front: "./裝扮/上衣/上衣1.png",
       },
-{
+      {
         id: "衣服2",
         name: "衣服2",
         category: "上衣",
         front: "./裝扮/上衣/上衣2.png",
       },
-{
+      {
         id: "衣服5",
         name: "衣服5",
         category: "上衣",
         front: "./裝扮/上衣/上衣5.png",
-customTransform:"scale(0.82)translate(11px, 105px) "
-
+        customTransform: "scale(0.82) translate(11px, 105px)",
       },
-{
+      {
         id: "衣服6",
         name: "衣服6",
         category: "上衣",
         front: "./裝扮/上衣/上衣6.png",
-customTransform:"scale(0.82)translate(11px, 112px) "
-
+        customTransform: "scale(0.82) translate(11px, 112px)",
       },
-
-
-{
+      {
         id: "衣服4",
         name: "衣服4",
         category: "上衣",
         front: "./裝扮/上衣/上衣4.png",
-customTransform:"scale(0.97)translate(0px, 48px) "
+        customTransform: "scale(0.97) translate(0px, 48px)",
       },
-
       {
-        id: "",
+        id: "褲子1",
         name: "褲子",
         category: "下身裝扮",
         front: "./裝扮/下身裝扮/褲子1.png",
@@ -64,16 +63,16 @@ customTransform:"scale(0.97)translate(0px, 48px) "
         name: "鞋子4",
         category: "鞋子",
         front: "./裝扮/鞋子/鞋子4.png",
-customTransform:"scale(0.85) translate(9px, 46.5px)"      },
-      
-  {
+        customTransform: "scale(0.85) translate(9px, 46.5px)",
+      },
+      {
         id: "鞋子5",
         name: "鞋子5",
         category: "鞋子",
         front: "./裝扮/鞋子/鞋子5.png",
-customTransform:"scale(0.85) translate(9px, 46.5px)"      },
-
-{
+        customTransform: "scale(0.85) translate(9px, 46.5px)",
+      },
+      {
         id: "襪子",
         name: "襪子",
         category: "襪子",
@@ -84,108 +83,98 @@ customTransform:"scale(0.85) translate(9px, 46.5px)"      },
         name: "上衣3",
         category: "上衣",
         front: "./裝扮/上衣/上衣3.png",
-customTransform:"scale(0.85) translate(7px, 79px)"
+        customTransform: "scale(0.85) translate(7px, 79px)",
       },
       {
         id: "裙子1",
         name: "裙子1",
         category: "下身裝扮",
         front: "./裝扮/下身裝扮/裙子1.png",
-customTransform:"scale(0.85) translate(10px, 110px)"
-
+        customTransform: "scale(0.85) translate(10px, 110px)",
       },
       {
         id: "頭飾1",
         name: "頭飾1",
-        category: "首飾",
-        front: "./裝扮/首飾/頭飾1.png",
-customTransform:"scale(0.85) translate(10px, 0px)"
-
-	},
-
+        category: ACCESSORY_CATEGORY,
+        front: "./裝扮/配件/頭飾1.png",
+        customTransform: "scale(0.85) translate(10px, 0px)",
+      },
       {
         id: "配件1",
         name: "頭飾1",
-        category: "首飾",
-        front: "./裝扮/首飾/配件1.png",
-
-	},
-
+        category: ACCESSORY_CATEGORY,
+        front: "./裝扮/配件/配件1.png",
+      },
       {
         id: "鞋子2",
         name: "鞋子2",
         category: "鞋子",
         front: "./裝扮/鞋子/鞋子2.png",
-customTransform:"scale(0.97) translate(7px, 20px)"
-
+        customTransform: "scale(0.97) translate(7px, 20px)",
       },
- {
+      {
         id: "鞋子3",
         name: "鞋子3",
         category: "鞋子",
         front: "./裝扮/鞋子/鞋子3.png",
       },
- {
+      {
         id: "裙子2",
         name: "裙子2",
         category: "下身裝扮",
         front: "./裝扮/下身裝扮/裙子2.png",
       },
- {
+      {
         id: "裙子3",
         name: "裙子3",
         category: "下身裝扮",
         front: "./裝扮/下身裝扮/裙子3.png",
       },
- {
+      {
         id: "褲子2",
         name: "褲子2",
         category: "下身裝扮",
         front: "./裝扮/下身裝扮/褲子2.png",
       },
-{
+      {
         id: "褲子5",
         name: "褲子5",
         category: "下身裝扮",
         front: "./裝扮/下身裝扮/褲子5.png",
-customTransform:"scale(0.85) translate(10px, 100px)"
-
+        customTransform: "scale(0.85) translate(10px, 100px)",
       },
-{
+      {
         id: "褲子6",
         name: "褲子6",
         category: "下身裝扮",
         front: "./裝扮/下身裝扮/褲子6.png",
-customTransform:"scale(0.85) translate(10px, 100px)"
-
+        customTransform: "scale(0.85) translate(10px, 100px)",
       },
-
- {
+      {
         id: "褲子3",
         name: "褲子3",
         category: "下身裝扮",
         front: "./裝扮/下身裝扮/褲子3.png",
       },
-{
+      {
         id: "褲子4",
         name: "褲子4",
         category: "下身裝扮",
         front: "./裝扮/下身裝扮/褲子4.png",
-customTransform:"scale(0.97) translate(0px, 48px)"
+        customTransform: "scale(0.97) translate(0px, 48px)",
       },
       {
         id: "襪子2",
         name: "襪子2",
         category: "襪子",
         front: "./裝扮/襪子/襪子2.png",
-customTransform:"scale(0.97) translate(9px, 14px)"
-
-
+        customTransform: "scale(0.97) translate(9px, 14px)",
       },
     ],
   };
 
-  const CATEGORIES = ["首飾", "上衣", "下身裝扮", "鞋子", "襪子"];
+  const CATEGORIES = [ACCESSORY_CATEGORY, "上衣", "下身裝扮", "鞋子", "襪子"];
+  const SINGLE_SELECT_CATEGORIES = CATEGORIES.filter((cat) => !MULTI_SELECT_CATEGORIES.has(cat));
   const PAGE_SIZE = 5;
 
   // 圖層：衣服 > 褲子 > 襪子，鞋子 > 襪子
@@ -194,7 +183,7 @@ customTransform:"scale(0.97) translate(9px, 14px)"
     下身裝扮: 20,
     鞋子: 15,
     上衣: 40,
-    首飾: 50,
+    [ACCESSORY_CATEGORY]: 50,
   };
 
   const state = {
@@ -203,8 +192,11 @@ customTransform:"scale(0.97) translate(9px, 14px)"
       items: [],
     },
 
-    // category -> itemId | null
-    equipped: new Map(),
+    // category -> itemId | null（僅單選分類）
+    equippedSingle: new Map(),
+
+    // Set<itemId>（僅配件）
+    equippedAccessories: new Set(),
 
     // itemId -> item
     itemsById: new Map(),
@@ -271,8 +263,10 @@ customTransform:"scale(0.97) translate(9px, 14px)"
   }
 
   function initEquipped() {
-    state.equipped = new Map();
-    CATEGORIES.forEach((cat) => state.equipped.set(cat, null));
+    state.equippedSingle = new Map();
+    SINGLE_SELECT_CATEGORIES.forEach((cat) => state.equippedSingle.set(cat, null));
+
+    state.equippedAccessories = new Set();
   }
 
   function initPagination() {
@@ -329,12 +323,19 @@ customTransform:"scale(0.97) translate(9px, 14px)"
     state.lastBaseFrontSrc = src;
   }
 
-  function getOverlayImgSelector(category) {
-    if (window.CSS && typeof window.CSS.escape === "function") {
-      return `img[data-category="${window.CSS.escape(category)}"]`;
-    }
+  function getOverlayImgSelector(category, itemId = null) {
+    const escapeValue = (value) => {
+      if (window.CSS && typeof window.CSS.escape === "function") {
+        return window.CSS.escape(String(value));
+      }
 
-    return `img[data-category="${category}"]`;
+      return String(value);
+    };
+
+    const categorySelector = `img[data-category="${escapeValue(category)}"]`;
+    if (!itemId) return categorySelector;
+
+    return `${categorySelector}[data-item-id="${escapeValue(itemId)}"]`;
   }
 
   function updateModelOverlays() {
@@ -344,9 +345,10 @@ customTransform:"scale(0.97) translate(9px, 14px)"
     const overlays = viewEl.querySelector(".model-overlays");
     if (!overlays) return;
 
-    CATEGORIES.forEach((cat) => {
+    // 單選分類：每分類最多一張疊圖
+    SINGLE_SELECT_CATEGORIES.forEach((cat) => {
       const existing = overlays.querySelector(getOverlayImgSelector(cat));
-      const itemId = state.equipped.get(cat);
+      const itemId = state.equippedSingle.get(cat);
 
       if (!itemId) {
         if (existing) existing.remove();
@@ -374,13 +376,48 @@ customTransform:"scale(0.97) translate(9px, 14px)"
       }
 
       img.style.zIndex = String(CATEGORY_Z_INDEX[cat] ?? 0);
+      img.style.transform = item.customTransform || "";
+    });
 
-      // 如果該物件有獨立設定的 transform，就套用它（會覆蓋 styles.css 的預設值）
-      if (item.customTransform) {
-        img.style.transform = item.customTransform;
-      } else {
-        img.style.transform = ""; 
+    // 配件（多選）：同分類多張疊圖
+    const equippedAccessories = Array.from(state.equippedAccessories)
+      .map((itemId) => state.itemsById.get(itemId))
+      .filter(Boolean)
+      .filter((item) => item.category === ACCESSORY_CATEGORY)
+      .filter((item) => item.images && typeof item.images.front === "string" && item.images.front.trim().length > 0)
+      .sort((a, b) => safeLocaleCompare(a.name, b.name));
+
+    const shouldKeep = new Set(equippedAccessories.map((item) => item.id));
+
+    overlays.querySelectorAll(getOverlayImgSelector(ACCESSORY_CATEGORY)).forEach((img) => {
+      const itemId = img.dataset.itemId;
+      if (!itemId || !shouldKeep.has(itemId)) {
+        img.remove();
       }
+    });
+
+    const accessoryBaseZ = CATEGORY_Z_INDEX[ACCESSORY_CATEGORY] ?? 0;
+
+    equippedAccessories.forEach((item, idx) => {
+      const selector = getOverlayImgSelector(ACCESSORY_CATEGORY, item.id);
+      const existing = overlays.querySelector(selector);
+      const src = item.images.front;
+
+      const img = existing || document.createElement("img");
+      if (!existing) {
+        img.alt = "";
+        img.dataset.category = ACCESSORY_CATEGORY;
+        img.dataset.itemId = item.id;
+        img.addEventListener("error", () => img.remove());
+        overlays.appendChild(img);
+      }
+
+      if (img.getAttribute("src") !== src) {
+        img.src = src;
+      }
+
+      img.style.zIndex = String(accessoryBaseZ + idx);
+      img.style.transform = item.customTransform || "";
     });
   }
 
@@ -485,7 +522,8 @@ customTransform:"scale(0.97) translate(9px, 14px)"
     const startIndex = currentPage * PAGE_SIZE;
     const pageItems = items.slice(startIndex, startIndex + PAGE_SIZE);
 
-    const equippedId = state.equipped.get(category);
+    const isMultiSelect = MULTI_SELECT_CATEGORIES.has(category);
+    const equippedSingleId = state.equippedSingle.get(category);
 
     root.innerHTML = "";
 
@@ -546,10 +584,12 @@ customTransform:"scale(0.97) translate(9px, 14px)"
     slots.className = "shelf-slots";
 
     pageItems.forEach((item) => {
+      const selected = isMultiSelect ? state.equippedAccessories.has(item.id) : equippedSingleId === item.id;
+
       const card = document.createElement("button");
       card.type = "button";
-      card.className = "slot-card" + (equippedId === item.id ? " is-selected" : "");
-      card.setAttribute("aria-pressed", equippedId === item.id ? "true" : "false");
+      card.className = "slot-card" + (selected ? " is-selected" : "");
+      card.setAttribute("aria-pressed", selected ? "true" : "false");
 
       card.appendChild(createSlotThumb(item.images.front));
 
@@ -587,8 +627,17 @@ customTransform:"scale(0.97) translate(9px, 14px)"
   }
 
   function toggleEquip(category, itemId) {
-    const current = state.equipped.get(category);
-    state.equipped.set(category, current === itemId ? null : itemId);
+    if (MULTI_SELECT_CATEGORIES.has(category)) {
+      if (state.equippedAccessories.has(itemId)) {
+        state.equippedAccessories.delete(itemId);
+      } else {
+        state.equippedAccessories.add(itemId);
+      }
+    } else {
+      const current = state.equippedSingle.get(category);
+      state.equippedSingle.set(category, current === itemId ? null : itemId);
+    }
+
     renderEquippedChips();
 
     if (state.activeCategory === category) {
@@ -604,11 +653,26 @@ customTransform:"scale(0.97) translate(9px, 14px)"
 
     root.innerHTML = "";
 
-    const equippedEntries = CATEGORIES.map((cat) => ({ cat, itemId: state.equipped.get(cat) })).filter(
-      ({ itemId }) => !!itemId,
-    );
+    const entries = [];
 
-    if (!equippedEntries.length) {
+    SINGLE_SELECT_CATEGORIES.forEach((cat) => {
+      const itemId = state.equippedSingle.get(cat);
+      if (itemId) {
+        entries.push({ cat, itemId });
+      }
+    });
+
+    const accessoryItems = Array.from(state.equippedAccessories)
+      .map((itemId) => state.itemsById.get(itemId))
+      .filter(Boolean)
+      .filter((item) => item.category === ACCESSORY_CATEGORY)
+      .sort((a, b) => safeLocaleCompare(a.name, b.name));
+
+    accessoryItems.forEach((item) => {
+      entries.push({ cat: ACCESSORY_CATEGORY, itemId: item.id });
+    });
+
+    if (!entries.length) {
       const empty = document.createElement("div");
       empty.className = "equipped-empty";
       empty.textContent = "尚未穿戴";
@@ -616,7 +680,7 @@ customTransform:"scale(0.97) translate(9px, 14px)"
       return;
     }
 
-    equippedEntries.forEach(({ cat, itemId }) => {
+    entries.forEach(({ cat, itemId }) => {
       const item = state.itemsById.get(itemId);
 
       const chip = document.createElement("div");
@@ -635,12 +699,18 @@ customTransform:"scale(0.97) translate(9px, 14px)"
       const remove = document.createElement("button");
       remove.type = "button";
       remove.className = "equipped-chip__remove";
-      remove.setAttribute("aria-label", `移除 ${cat}`);
+      remove.setAttribute("aria-label", item ? `移除 ${cat} ${item.name}` : `移除 ${cat}`);
       remove.textContent = "×";
 
       remove.addEventListener("click", (evt) => {
         evt.stopPropagation();
-        state.equipped.set(cat, null);
+
+        if (MULTI_SELECT_CATEGORIES.has(cat)) {
+          state.equippedAccessories.delete(itemId);
+        } else {
+          state.equippedSingle.set(cat, null);
+        }
+
         renderEquippedChips();
 
         if (state.activeCategory === cat) {
@@ -668,7 +738,9 @@ customTransform:"scale(0.97) translate(9px, 14px)"
   }
 
   function clearAll() {
-    CATEGORIES.forEach((cat) => state.equipped.set(cat, null));
+    SINGLE_SELECT_CATEGORIES.forEach((cat) => state.equippedSingle.set(cat, null));
+    state.equippedAccessories.clear();
+
     renderEquippedChips();
     renderShelf();
     updateModelOverlays();
@@ -677,32 +749,52 @@ customTransform:"scale(0.97) translate(9px, 14px)"
   function randomWear() {
     const requiredCategories = new Set(["上衣", "下身裝扮", "鞋子"]);
 
-    CATEGORIES.forEach((cat) => {
-      const candidates = getCategoryItems(cat).filter((item) => {
-        const src = item && item.images && item.images.front;
-        return typeof src === "string" && src.trim().length > 0;
-      });
+    const hasFrontImage = (item) => {
+      const src = item && item.images && item.images.front;
+      return typeof src === "string" && src.trim().length > 0;
+    };
+
+    // 單選分類
+    SINGLE_SELECT_CATEGORIES.forEach((cat) => {
+      const candidates = getCategoryItems(cat).filter(hasFrontImage);
 
       if (!candidates.length) {
-        state.equipped.set(cat, null);
+        state.equippedSingle.set(cat, null);
         return;
       }
 
       if (requiredCategories.has(cat)) {
         const pick = Math.floor(Math.random() * candidates.length);
-        state.equipped.set(cat, candidates[pick].id);
+        state.equippedSingle.set(cat, candidates[pick].id);
         return;
       }
 
       // 0 = 不穿；1..n = 穿候選之一
       const pick = Math.floor(Math.random() * (candidates.length + 1));
       if (pick === 0) {
-        state.equipped.set(cat, null);
+        state.equippedSingle.set(cat, null);
         return;
       }
 
-      state.equipped.set(cat, candidates[pick - 1].id);
+      state.equippedSingle.set(cat, candidates[pick - 1].id);
     });
+
+    // 配件（多選）：抽 0..N 件
+    const accessoryCandidates = getCategoryItems(ACCESSORY_CATEGORY).filter(hasFrontImage);
+    state.equippedAccessories.clear();
+
+    if (accessoryCandidates.length) {
+      const candidates = [...accessoryCandidates];
+      for (let i = candidates.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
+      }
+
+      const count = Math.floor(Math.random() * (candidates.length + 1));
+      for (let i = 0; i < count; i += 1) {
+        state.equippedAccessories.add(candidates[i].id);
+      }
+    }
 
     renderEquippedChips();
     renderShelf();
