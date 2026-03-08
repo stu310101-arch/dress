@@ -185,10 +185,8 @@ body {
 }
 
 .model-overlays img[data-category="配件"] {
-  /* 讓配件在「不裁切」的前提下，維持接近 cover 的視覺大小：
-     將元素寬度放大到 200%，並向左偏移 50%，再用 contain 完整呈現 */
-  inset: 0 auto 0 -50%;
-  width: 200%;
+  inset: 0;
+  width: 100%;
   height: 100%;
   object-fit: contain;
   object-position: center bottom;
