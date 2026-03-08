@@ -39,13 +39,6 @@
         front: "./裝扮/上衣/上衣6.png",
         customTransform: "scale(0.82) translate(11px, 112px)",
       },
-{
-        id: "衣服7",
-        name: "衣服7",
-        category: "上衣",
-        front: "./裝扮/上衣/上衣7.png",
-        customTransform: "scale(0.82) translate(11px, 112px)",
-      },
       {
         id: "衣服4",
         name: "衣服4",
@@ -77,13 +70,6 @@
         name: "鞋子5",
         category: "鞋子",
         front: "./裝扮/鞋子/鞋子5.png",
-        customTransform: "scale(0.85) translate(9px, 46.5px)",
-      },
-{
-        id: "鞋子6",
-        name: "鞋子6",
-        category: "鞋子",
-        front: "./裝扮/鞋子/鞋子6.png",
         customTransform: "scale(0.85) translate(9px, 46.5px)",
       },
       {
@@ -118,14 +104,6 @@
         name: "配件1",
         category: ACCESSORY_CATEGORY,
         front: "./裝扮/配件/配件1.png",
-      },
-{
-        id: "配件2",
-        name: "配件2",
-        category: ACCESSORY_CATEGORY,
-        front: "./裝扮/配件/配件2.png",
-customTransform: "scale(0.5) translate(7px, 100px)",
-
       },
       {
         id: "鞋子2",
@@ -170,13 +148,6 @@ customTransform: "scale(0.5) translate(7px, 100px)",
         name: "褲子6",
         category: "下身裝扮",
         front: "./裝扮/下身裝扮/褲子6.png",
-        customTransform: "scale(0.85) translate(10px, 100px)",
-      },
-{
-        id: "褲子7",
-        name: "褲子7",
-        category: "下身裝扮",
-        front: "./裝扮/下身裝扮/褲子7.png",
         customTransform: "scale(0.85) translate(10px, 100px)",
       },
       {
@@ -766,31 +737,8 @@ customTransform: "scale(0.5) translate(7px, 100px)",
     if (randomWearBtn) randomWearBtn.addEventListener("click", randomWear);
   }
 
-  function ensureAccessoryOverlaysNotClipped() {
-    const viewEl = document.querySelector('#modelStage .model-view[data-view="front"]');
-    if (!viewEl) return;
-
-    const frameEl = viewEl.querySelector(".model-frame");
-    if (frameEl) frameEl.style.overflow = "visible";
-
-    const overlaysEl = viewEl.querySelector(".model-overlays");
-    if (overlaysEl) overlaysEl.style.overflow = "visible";
-
-    const assertOverflowVisible = (el, label) => {
-      const overflow = window.getComputedStyle(el).overflow;
-      if (overflow !== "visible") {
-        console.warn(`[wardrobe] expected ${label} overflow to be visible, got: ${overflow}`);
-      }
-    };
-
-    if (frameEl) assertOverflowVisible(frameEl, ".model-frame");
-    if (overlaysEl) assertOverflowVisible(overlaysEl, ".model-overlays");
-  }
-
   document.addEventListener("DOMContentLoaded", () => {
     initEquipped();
-
-    ensureAccessoryOverlaysNotClipped();
 
     state.wardrobe = normalizeWardrobe(WARDROBE_DATA);
     setStatus("已載入衣櫃資料");

@@ -139,12 +139,7 @@ body {
   min-height: 0;
 }
 
-.model-pane,
-.model-stage,
-.model-view,
-.model-overlays {
-  overflow: visible;
-}
+
 
 .model-frame {
   width: min(100%, 380px); /* 縮小背景區塊寬度，從 460px 改為 380px */
@@ -163,7 +158,7 @@ body {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Changed from contain to cover to ensure it fills the frame and aligns */
+  object-fit: cover;
   object-position: center bottom; /* Anchor to the bottom so feet stay grounded */
   z-index: 1;
   display: block;
@@ -184,7 +179,7 @@ body {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Avoid cropping overlay assets */
+  object-fit: cover; /* Avoid cropping overlay assets */
   object-position: center bottom;
   image-rendering: auto;
 }
