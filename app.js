@@ -39,6 +39,13 @@
         front: "./裝扮/上衣/上衣6.png",
         customTransform: "scale(0.82) translate(11px, 112px)",
       },
+{
+        id: "衣服7",
+        name: "衣服7",
+        category: "上衣",
+        front: "./裝扮/上衣/上衣7.png",
+        customTransform: "scale(0.82) translate(11px, 112px)",
+      },
       {
         id: "衣服4",
         name: "衣服4",
@@ -72,6 +79,13 @@
         front: "./裝扮/鞋子/鞋子5.png",
         customTransform: "scale(0.85) translate(9px, 46.5px)",
       },
+{
+        id: "鞋子6",
+        name: "鞋子6",
+        category: "鞋子",
+        front: "./裝扮/鞋子/鞋子6.png",
+        customTransform: "scale(0.85) translate(9px, 46.5px)",
+      },
       {
         id: "襪子",
         name: "襪子",
@@ -101,9 +115,17 @@
       },
       {
         id: "配件1",
-        name: "頭飾1",
+        name: "配件1",
         category: ACCESSORY_CATEGORY,
         front: "./裝扮/配件/配件1.png",
+      },
+{
+        id: "配件2",
+        name: "配件2",
+        category: ACCESSORY_CATEGORY,
+        front: "./裝扮/配件/配件2.png",
+customTransform: "scale(0.5) translate(7px, 100px)",
+
       },
       {
         id: "鞋子2",
@@ -148,6 +170,13 @@
         name: "褲子6",
         category: "下身裝扮",
         front: "./裝扮/下身裝扮/褲子6.png",
+        customTransform: "scale(0.85) translate(10px, 100px)",
+      },
+{
+        id: "褲子7",
+        name: "褲子7",
+        category: "下身裝扮",
+        front: "./裝扮/下身裝扮/褲子7.png",
         customTransform: "scale(0.85) translate(10px, 100px)",
       },
       {
