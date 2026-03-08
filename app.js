@@ -766,8 +766,31 @@ customTransform: "scale(0.5) translate(7px, 100px)",
     if (randomWearBtn) randomWearBtn.addEventListener("click", randomWear);
   }
 
+  function ensureAccessoryOverlaysNotClipped() {
+    const viewEl = document.querySelector('#modelStage .model-view[data-view="front"]');
+    if (!viewEl) return;
+
+    const frameEl = viewEl.querySelector(".model-frame");
+    if (frameEl) frameEl.style.overflow = "visible";
+
+    const overlaysEl = viewEl.querySelector(".model-overlays");
+    if (overlaysEl) overlaysEl.style.overflow = "visible";
+
+    const assertOverflowVisible = (el, label) => {
+      const overflow = window.getComputedStyle(el).overflow;
+      if (overflow !== "visible") {
+        console.warn(`[wardrobe] expected ${label} overflow to be visible, got: ${overflow}`);
+      }
+    };
+
+    if (frameEl) assertOverflowVisible(frameEl, ".model-frame");
+    if (overlaysEl) assertOverflowVisible(overlaysEl, ".model-overlays");
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     initEquipped();
+
+    ensureAccessoryOverlaysNotClipped();
 
     state.wardrobe = normalizeWardrobe(WARDROBE_DATA);
     setStatus("已載入衣櫃資料");
